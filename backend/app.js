@@ -85,13 +85,8 @@ const start = async () => {
       throw new Error("JWT_SECRET is missing. Add it to backend/.env");
     }
     await connectPostgres();
-    const { RiderApplication, Order, DeliveryStatusHistory, User, PaymentAuditLog } = require("./models");
-    await RiderApplication.sync({ alter: true });
-    await Order.sync({ alter: true });
-    await DeliveryStatusHistory.sync({ alter: true });
-    await PaymentAuditLog.sync({ alter: true });
-    await User.sync({ alter: true });
-    console.log("RiderApplication, Order, DeliveryStatusHistory, PaymentAuditLog & User database tables synced successfully.");
+    // Production schema changes must be applied through reviewed migrations, not at app startup.
+    console.log("PostgreSQL connection verified; production schema left unchanged.");
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
