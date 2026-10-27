@@ -34,14 +34,25 @@ const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const configuredFrontendOrigins = (process.env.FRONTEND_URL || "")
+  .split(",")
+  .map((value) => value.trim().replace(/\/$/, ""))
+  .filter(Boolean);
+
+const allowedFrontendOrigins = new Set([
+  ...configuredFrontendOrigins,
+  // Keep local development working without opening CORS to arbitrary sites.
+]);
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin) return callback(null, true);
-      const ok =
+      if (!origin) return callback(null, true); // server-to-server / health checks
+      const isLocalDevelopment =
         /^http:\/\/localhost:\d+$/.test(origin) ||
         /^http:\/\/127\.0\.0\.1:\d+$/.test(origin);
-      return ok ? callback(null, true) : callback(null, false);
+      const isConfiguredFrontend = allowedFrontendOrigins.has(origin);
+      return callback(null, isLocalDevelopment || isConfiguredFrontend ? null : new Error("Origin not allowed by CORS"), isLocalDevelopment || isConfiguredFrontend);
     },
     credentials: true,
   })
