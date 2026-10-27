@@ -44,19 +44,30 @@ const allowedFrontendOrigins = new Set([
   // Keep local development working without opening CORS to arbitrary sites.
 ]);
 
+const configuredFrontendOrigins = (process.env.FRONTEND_URL || "")
+  .split(",")
+  .map((value) => value.trim().replace(/\/$/, ""))
+  .filter(Boolean);
+
+const allowedFrontendOrigins = new Set(configuredFrontendOrigins);
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin) return callback(null, true); // server-to-server / health checks
+      if (!origin) return callback(null, true);
       const isLocalDevelopment =
         /^http:\/\/localhost:\d+$/.test(origin) ||
         /^http:\/\/127\.0\.0\.1:\d+$/.test(origin);
       const isConfiguredFrontend = allowedFrontendOrigins.has(origin);
-      return callback(null, isLocalDevelopment || isConfiguredFrontend ? null : new Error("Origin not allowed by CORS"), isLocalDevelopment || isConfiguredFrontend);
+      if (isLocalDevelopment || isConfiguredFrontend) {
+        return callback(null, true);
+      }
+      return callback(new Error("Origin not allowed by CORS"));
     },
     credentials: true,
   })
 );
+
 app.use("/api/v1", mainRouter);
 app.use("/api/v1/books", booksRouter);
 app.use("/api/v1/rent", rentRouter);
