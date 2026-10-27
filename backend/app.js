@@ -39,16 +39,6 @@ const configuredFrontendOrigins = (process.env.FRONTEND_URL || "")
   .map((value) => value.trim().replace(/\/$/, ""))
   .filter(Boolean);
 
-const allowedFrontendOrigins = new Set([
-  ...configuredFrontendOrigins,
-  // Keep local development working without opening CORS to arbitrary sites.
-]);
-
-const configuredFrontendOrigins = (process.env.FRONTEND_URL || "")
-  .split(",")
-  .map((value) => value.trim().replace(/\/$/, ""))
-  .filter(Boolean);
-
 const allowedFrontendOrigins = new Set(configuredFrontendOrigins);
 
 app.use(
