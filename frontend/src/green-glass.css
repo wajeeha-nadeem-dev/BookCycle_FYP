@@ -634,7 +634,6 @@ div[style*="background: var(--primary)"] {
 /* Shared palette and glass card layout, keeping the existing page content intact. */
 body,
 .HomePage,
-#root > div:has(.h-hero),
 #root div[style*="background: var(--bg)"]:has(.h-hero),
 .WishlistPage {
   background-color: #f4f2e9 !important;
@@ -857,7 +856,7 @@ body {
   background-repeat: no-repeat !important;
 }
 
-:is(.HomePage, .WishlistPage, .ExploreBooksPage, .CategoryResultsPage, .SearchResultsPage, .CartPage, #root div[style*="background: var(--bg)"]:has(.h-hero)) {
+:is(.HomePage, .WishlistPage, .ExploreBooksPage, .CategoryResultsPage, .SearchResultsPage, .CartPage, #root > div:has(.h-hero), #root div[style*="background: var(--bg)"]:has(.h-hero)) {
   background: transparent !important;
 }
 
