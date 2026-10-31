@@ -118,7 +118,7 @@ const AdminLayout = () => {
 
         {/* Profile Card (Matching image) */}
         {sidebarOpen && (
-          <div style={{
+          <div className="admin-profile-card" style={{
             padding: '14px 16px',
             margin: '16px 12px 24px',
             backgroundColor: '#0E392E',

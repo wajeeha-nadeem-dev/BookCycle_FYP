@@ -47,6 +47,12 @@ const extractNumericPrice = (value) => {
     return Number.isFinite(parsed) ? parsed : 0;
 };
 
+const getSidebarBookPrice = (book) => {
+    if (book.exchangeType === 'Exchange') return 'Exchange';
+    const price = extractNumericPrice(book.price);
+    return price > 0 ? `Rs. ${price.toLocaleString()}` : 'Free';
+};
+
 export default function HomePage() {
     const { user } = useAuth();
     const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
@@ -60,6 +66,7 @@ export default function HomePage() {
     const [activeConds, setActiveConds] = useState([]);
     const [priceRange, setPriceRange] = useState(5000);
     const [selectedPdf, setSelectedPdf] = useState(null);
+    const [activeHowStep, setActiveHowStep] = useState(null);
     const [modalMessage, setModalMessage] = useState("");
     const wrapperRef = useRef(null);
     const [featuredBooks, setFeaturedBooks] = useState([]);
@@ -408,9 +415,9 @@ export default function HomePage() {
     <div className="books-grid">
       {featuredBooks.map(b => (
         <div className="book-card" key={b.id} onClick={() => navigate(`/book/${b.id}`)} style={{ cursor: 'pointer', position: 'relative' }}>
+          {b.type && <span className={`book-badge badge-${b.type}`}>{b.type === 'buy' ? 'Buy' : b.type.charAt(0).toUpperCase() + b.type.slice(1)}</span>}
           <div className="book-cover">
             <img src={b.img} alt={b.title} loading="lazy" />
-            {b.type && <span className={`book-badge badge-${b.type}`}>{b.type === 'buy' ? 'Buy' : b.type.charAt(0).toUpperCase() + b.type.slice(1)}</span>}
           </div>
           <div className="book-info">
             <div className="book-title">{b.title}</div>
@@ -535,7 +542,7 @@ export default function HomePage() {
       <div><h2 className="section-title">Explore by <span>Category</span></h2></div>
       <Link to="/explore" className="see-all">View All Genres</Link>
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '14px' }}>
+    <div className="home-categories-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '14px' }}>
       <style>{`
         .home-cat-card { border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; position: relative; }
         .home-cat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,.35); }
@@ -598,38 +605,69 @@ export default function HomePage() {
   </div>
 
   
-  <div style={{ marginTop: '60px', background: '#f5f0d0', borderRadius: '24px', padding: '40px' }}>
+  <div className="how-it-works-section" style={{ marginTop: '60px', background: '#f5f0d0', borderRadius: '24px', padding: '40px' }}>
     <div className="section-header">
       <div><h2 className="section-title">How BookCycle <span>Works</span></h2></div>
     </div>
-    <div className="steps-grid">
-      <div className="step">
-        <div className="step-num">01</div>
-        <div className="step-img"><img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=200&q=80" alt="Upload" loading="lazy"/></div>
-        <h3>Upload Book</h3>
-        <p>List your book with photos, condition & preferred mode — takes 2 minutes.</p>
-        <div className="step-arrow">→</div>
-      </div>
-      <div className="step">
-        <div className="step-num">02</div>
-        <div className="step-img"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=80" alt="Request"/></div>
-        <h3>User Requests</h3>
-        <p>A reader finds and requests your book on the platform.</p>
-        <div className="step-arrow">→</div>
-      </div>
-      <div className="step">
-        <div className="step-num">03</div>
-        <div className="step-img"><img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=200&q=80" alt="Approve"/></div>
-        <h3>Owner Approves</h3>
-        <p>You review the request and confirm availability instantly.</p>
-        <div className="step-arrow">→</div>
-      </div>
-      <div className="step">
-        <div className="step-num">04</div>
-        <div className="step-img"><img src="https://images.unsplash.com/photo-1601628828688-632f38a5a7d0?w=200&q=80" alt="Delivery"/></div>
-        <h3>Delivery in Islamabad</h3>
-        <p>Book reaches the reader via our trusted local delivery network.</p>
-      </div>
+    <div
+      className="steps-grid"
+      role="group"
+      aria-label="How BookCycle works"
+      onMouseLeave={() => setActiveHowStep(null)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setActiveHowStep(null);
+      }}
+    >
+      {[
+        {
+          title: 'Upload Book', image: '/images/how-it-works-upload.png', alt: 'Upload',
+          description: 'List your book with photos, condition & preferred mode — takes 2 minutes.',
+          extra: 'Add clear photos, describe its condition, and choose whether to sell, rent, exchange, or give it for free. Your listing can then reach readers in Islamabad.',
+          action: 'List a Book', to: '/seller',
+        },
+        {
+          title: 'User Requests', image: '/images/how-it-works-request.png', alt: 'Request',
+          description: 'A reader finds and requests your book on the platform.',
+          extra: 'Browse by category or book type, open a listing to see its details, and send a request for a book that suits you.',
+          action: 'Explore Books', to: '/explore',
+        },
+        {
+          title: 'Owner Approves', image: '/images/how-it-works-approve.png', alt: 'Approve',
+          description: 'You review the request and confirm availability instantly.',
+          extra: 'Book owners can review incoming requests from their dashboard and confirm whether the book is available.',
+          action: 'Open Dashboard', to: '/dashboard',
+        },
+        {
+          title: 'Delivery in Islamabad', image: '/images/how-it-works-delivery.png', alt: 'Delivery',
+          description: 'Book reaches the reader via our trusted local delivery network.',
+          extra: 'After approval, coordinate the handoff so the book can reach its next reader in Islamabad.',
+          action: 'Browse Books', to: '/explore',
+        },
+      ].map((step, index) => (
+        <div
+          className={`step${activeHowStep === index ? ' is-active' : activeHowStep !== null ? ' is-collapsed' : ''}`}
+          key={step.title}
+          onMouseEnter={() => setActiveHowStep(index)}
+        >
+          <div className="step-num">0{index + 1}</div>
+          <div className="step-content" id={`how-step-panel-${index + 1}`}>
+            <div className="step-img"><img src={step.image} alt={step.alt} loading="lazy"/></div>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+            <p className="step-extra">{step.extra}</p>
+            <Link className="step-action" to={step.to}>{step.action} <span aria-hidden="true">→</span></Link>
+          </div>
+          <button
+            type="button"
+            className="step-arrow"
+            aria-label={`Expand step ${index + 1}: ${step.title}`}
+            aria-controls={`how-step-panel-${index + 1}`}
+            aria-expanded={activeHowStep === index}
+            onFocus={() => setActiveHowStep(index)}
+            onClick={() => setActiveHowStep(index)}
+          >→</button>
+        </div>
+      ))}
     </div>
   </div>
 
@@ -647,9 +685,9 @@ export default function HomePage() {
       ) : (
         (rentBooks.length > 0 ? rentBooks : featuredBooks.filter(b => b.exchangeType === 'Rent')).map(b => (
           <div key={b.id || b._id} className="book-card" onClick={() => navigate(`/book/${b.id || b._id}`)} style={{ cursor: 'pointer' }}>
+            <span className="book-badge badge-rent">Rent</span>
             <div className="book-cover">
               <img src={b.img} alt={b.title}/>
-              <span className="book-badge badge-rent">Rent</span>
             </div>
             <div className="book-info">
               <div className="book-title">{b.title}</div>
@@ -702,9 +740,9 @@ export default function HomePage() {
       <div className="books-grid" style={{ gridTemplateColumns: 'repeat(3,1fr)' }}>
         {exchangeBooks.map(b => (
           <div className="book-card" key={b.id} onClick={() => navigate(`/book/${b.id}`)} style={{ cursor: 'pointer' }}>
+            <span className="book-badge badge-exchange">Exchange</span>
             <div className="book-cover" style={{ position: 'relative' }}>
               <img src={b.img} alt={b.title} loading="lazy"/>
-              <span className="book-badge badge-exchange">Exchange</span>
             </div>
             <div className="book-info">
               <div className="book-title">{b.title}</div>
@@ -810,9 +848,9 @@ export default function HomePage() {
     <div className="books-grid" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))' }}>
       {recentBooks.map(b => (
         <div className="book-card book-card-h" key={b.id} onClick={() => navigate(`/book/${b.id}`)} style={{ cursor: 'pointer', position: 'relative', display: 'flex', width: '100%' }}>
+          {b.type && <span className={`book-badge badge-${b.type}`} style={{ top: '6px', right: '4px', fontSize: '.6rem', padding: '2px 6px' }}>{b.type === 'buy' ? 'Buy' : b.type.charAt(0).toUpperCase() + b.type.slice(1)}</span>}
           <div className="book-cover" style={{ width: '82px', flexShrink: '0', borderRadius: '0', minHeight: '110px', height: 'auto', position: 'relative' }}>
             <img src={b.img} alt={b.title} loading="lazy"/>
-            {b.type && <span className={`book-badge badge-${b.type}`} style={{ top: '6px', right: '4px', fontSize: '.6rem', padding: '2px 6px' }}>{b.type === 'buy' ? 'Buy' : b.type.charAt(0).toUpperCase() + b.type.slice(1)}</span>}
           </div>
           <div className="book-info" style={{ padding: '14px', flex: 1, minWidth: 0 }}>
             <div className="book-title" style={{ fontSize: '.9rem' }}>{b.title}</div>
@@ -937,28 +975,13 @@ export default function HomePage() {
     </div>
     {topBooks.length === 0 && <div style={{ fontSize: '.8rem', color: 'var(--text-muted)' }}>No books found</div>}
     {topBooks.map(b => (
-      <div className="top-book-row" key={b.id} onClick={() => navigate(`/book/${b.id}`)} style={{ cursor: 'pointer' }}>
+      <div className="top-book-row" key={b.id}>
         <div className="top-book-cover"><img src={b.img} alt={b.title} loading="lazy"/></div>
         <div className="top-book-info">
           <div className="top-book-title">{b.title}</div>
-          <div className="top-book-meta">{b.author}</div>
-          <div style={{ margin: '2px 0' }}>
-            <StarRating 
-              rating={b.bookRating?.starRating || 0} 
-              reviewCount={b.bookRating?.reviewsCount || 0} 
-              size={10}
-            />
-          </div>
-          <div className="top-book-seller" style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-            <span>Seller: {b.sellerName}</span>
-            {b.bookRating?.reviewsCount > 0 && (
-              <span style={{ display: 'flex', alignItems: 'center', gap: '2px', marginLeft: '4px' }}>
-                <span style={{ color: '#FFD700' }}>★</span>
-                <span>{b.bookRating?.displayRating}/5</span>
-              </span>
-            )}
-          </div>
+          <div className="top-book-meta">{getSidebarBookPrice(b)}</div>
         </div>
+        <Link to={`/book/${b.id}`} className="sidebar-book-details">Details</Link>
       </div>
     ))}
   </div>
@@ -969,28 +992,13 @@ export default function HomePage() {
     </div>
     {topSellingBooks.length === 0 && <div style={{ fontSize: '.8rem', color: 'var(--text-muted)' }}>No books found</div>}
     {topSellingBooks.map(b => (
-      <div className="top-book-row" key={b.id} onClick={() => navigate(`/book/${b.id}`)} style={{ cursor: 'pointer' }}>
+      <div className="top-book-row" key={b.id}>
         <div className="top-book-cover"><img src={b.img} alt={b.title} loading="lazy"/></div>
         <div className="top-book-info">
           <div className="top-book-title">{b.title}</div>
-          <div className="top-book-meta">Rs. {b.price}</div>
-          <div style={{ margin: '2px 0' }}>
-            <StarRating 
-              rating={b.bookRating?.starRating || 0} 
-              reviewCount={b.bookRating?.reviewsCount || 0} 
-              size={10}
-            />
-          </div>
-          <div className="top-book-seller" style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-            <span>Seller: {b.sellerName}</span>
-            {b.bookRating?.reviewsCount > 0 && (
-              <span style={{ display: 'flex', alignItems: 'center', gap: '2px', marginLeft: '4px' }}>
-                <span style={{ color: '#FFD700' }}>★</span>
-                <span>{b.bookRating?.displayRating}/5</span>
-              </span>
-            )}
-          </div>
+          <div className="top-book-meta">{getSidebarBookPrice(b)}</div>
         </div>
+        <Link to={`/book/${b.id}`} className="sidebar-book-details">Details</Link>
       </div>
     ))}
   </div>
@@ -1054,7 +1062,7 @@ export default function HomePage() {
 
 <section className="cta-section">
   <div className="cta-bg">
-    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1600&q=85" alt="Library" loading="lazy"/>
+    <img src="/images/community-cta-background.png" alt="Library bookshelves" loading="lazy"/>
   </div>
   <div className="cta-content">
     <div className="section-label" style={{ background: 'rgba(255,255,255,.2)', color: '#fff', display: 'inline-flex', marginBottom: '20px' }}>✦ Join 840+ Members</div>

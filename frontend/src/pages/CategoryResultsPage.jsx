@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { IMAGES } from '../data/assets';
 import RecommendationWidget from '../components/RecommendationWidget';
 import useRecommendations from '../hooks/useRecommendations';
 import { useWishlist } from '../context/WishlistContext';
@@ -98,7 +97,7 @@ export default function CategoryResultsPage() {
             borderBottom: '1.5px solid rgba(221,161,94,.45)' 
         }}>
             <Link to="/home" className="logo">
-                <div className="logo-icon"><img src={IMAGES.img_0} alt="BookCycle logo"/></div>
+                <div className="logo-icon"><img src="/images/bookcycle-logo.png" alt="BookCycle logo"/></div>
                 BookCycle
             </Link>
 
@@ -207,11 +206,11 @@ export default function CategoryResultsPage() {
         <div style={{gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: 'var(--muted)'}}>Loading books...</div>
       ) : books.map((book, idx) => (
         <div className="book-card" key={book._id} style={{ animationDelay: `${idx * 0.04}s`, cursor: 'pointer' }} onClick={() => navigate(`/book/${book._id}`)}>
+          {book.exchangeType === 'Sell' && <span className="tb tb-buy">Buy</span>}
+          {book.exchangeType === 'Rent' && <span className="tb tb-rent" style={{ background: 'var(--primary)', color: '#fff', padding: '4px 10px', borderRadius: '4px', fontSize: '.75rem', fontWeight: 'bold' }}>Rent</span>}
+          {book.exchangeType === 'Exchange' && <span className="tb tb-exchange">Exchange</span>}
           <div className="bc-img-wrap" style={{ position: 'relative' }}>
             <img src={getImageUrl(book)} alt={book.title} className="bc-img"/>
-            {book.exchangeType === 'Sell' && <span className="tb tb-buy">Buy</span>}
-            {book.exchangeType === 'Rent' && <span className="tb tb-rent" style={{ background: 'var(--primary)', color: '#fff', padding: '4px 10px', borderRadius: '4px', fontSize: '.75rem', fontWeight: 'bold' }}>Rent</span>}
-            {book.exchangeType === 'Exchange' && <span className="tb tb-exchange">Exchange</span>}
           </div>
           <div className="bc-body">
             <div className="bc-cat">{book.category}</div>

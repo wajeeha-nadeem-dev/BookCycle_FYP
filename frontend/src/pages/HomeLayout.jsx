@@ -5,15 +5,13 @@ import Footer from '../components/Footer'
 
 const HomeLayout = () => {
   const location = useLocation();
-  const isLanding = location.pathname === '/';
-
   return (
     <>
-      {!isLanding && <Navbar />}
+      <Navbar />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Outlet />
       </div>
-      {!isLanding && <Footer />}
+      {location.pathname !== '/' && <Footer />}
     </>
   )
 }

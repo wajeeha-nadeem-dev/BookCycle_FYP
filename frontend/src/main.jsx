@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './index.css'
 import "./marketplace.css";
 import "./responsive.css";
+import "./green-glass.css";
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

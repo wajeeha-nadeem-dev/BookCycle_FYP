@@ -64,11 +64,6 @@ export default function WishlistPage() {
                                     >
                                         <FiTrash2 />
                                     </button>
-                                    <div style={{ position: 'absolute', bottom: '12px', left: '12px' }}>
-                                        {book.badge && <span className={`book-badge badge-${book.badge}`} style={{ position: 'static', padding: '4px 12px' }}>
-                                            {book.badge === 'sell' ? 'Buy' : book.badge.charAt(0).toUpperCase() + book.badge.slice(1)}
-                                        </span>}
-                                    </div>
                                 </div>
                                 <div style={{ padding: '20px' }}>
                                     <div style={{ fontSize: '.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--accent)', letterSpacing: '.05em', marginBottom: '6px' }}>{book.category}</div>
@@ -125,6 +120,9 @@ export default function WishlistPage() {
                                         </div>
                                     </div>
                                 </div>
+                                {book.badge && <span className={`book-badge badge-${book.badge}`} style={{ position: 'static', padding: '4px 12px' }}>
+                                    {book.badge === 'sell' ? 'Buy' : book.badge.charAt(0).toUpperCase() + book.badge.slice(1)}
+                                </span>}
                             </div>
                         ))}
                     </div>

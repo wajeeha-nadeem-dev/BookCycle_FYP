@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 378 378" fill="none">
+  <defs>
+    <linearGradient id="greenCover" x1="93" y1="26" x2="142" y2="177" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#165348"/>
+      <stop offset="1" stop-color="#103F37"/>
+    </linearGradient>
+    <linearGradient id="goldCover" x1="55" y1="158" x2="197" y2="324" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E6B269"/>
+      <stop offset="1" stop-color="#D9A452"/>
+    </linearGradient>
+    <linearGradient id="oliveCover" x1="198" y1="43" x2="323" y2="222" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#706A31"/>
+      <stop offset="1" stop-color="#5E5826"/>
+    </linearGradient>
+    <linearGradient id="rustCover" x1="177" y1="222" x2="307" y2="314" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B55D30"/>
+      <stop offset="1" stop-color="#A94D24"/>
+    </linearGradient>
+    <linearGradient id="pages" x1="80" y1="46" x2="279" y2="282" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5F2E9"/>
+      <stop offset="1" stop-color="#E5E2D9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Four cleanly layered books retain the original green, olive, gold, rust, and cream palette. -->
+  <g stroke-linejoin="round">
+    <!-- Gold book at the lower left -->
+    <path d="M39 177 107 146c11-5 20-1 27 8l88 109c8 10 6 21-6 28l-81 37c-11 5-21 2-28-9L31 202c-7-10-4-20 8-25Z" fill="url(#goldCover)" stroke="#C99545" stroke-width="2.5"/>
+    <path d="m35 185 11-6 78 116-12 7-78-117Z" fill="url(#pages)" stroke="#F3E9D5" stroke-width="1.5"/>
+    <path d="m40 191 10-5m-5 14 10-5m-5 14 10-5m-5 14 10-5m-5 14 10-5" stroke="#B98543" stroke-width="2.5" stroke-linecap="round" opacity=".78"/>
+
+    <!-- Olive book at the upper right -->
+    <path d="m191 58 54-15c11-3 20 2 25 12l71 118c6 11 1 21-11 27l-61 29c-10 5-20 1-26-9L177 105c-6-11-1-20 8-24l6-23Z" fill="url(#oliveCover)" stroke="#514C20" stroke-width="2.5"/>
+    <path d="m252 49 12-5 77 132-13 7-76-134Z" fill="url(#pages)" stroke="#F3E9D5" stroke-width="1.5"/>
+    <path d="m263 49 76 130m-84-127 76 131m-84-127 76 131" stroke="#777144" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+
+    <!-- Forest book at the upper left -->
+    <path d="M43 66 156 19c14-6 26-1 31 12l29 75c5 14-2 27-17 33L94 178c-15 6-27-1-33-16L32 91c-5-13-1-21 11-25Z" fill="url(#greenCover)" stroke="#0E3B33" stroke-width="2.5"/>
+    <path d="M42 66 155 20c13-5 22 0 27 12l7 17L68 98 39 84c-7-4-7-13 3-18Z" fill="url(#pages)" stroke="#F3E9D5" stroke-width="1.5"/>
+    <path d="m54 68 113-46m-104 56 112-45m-102 56 100-40" stroke="#8F9A8A" stroke-width="2.5" stroke-linecap="round" opacity=".84"/>
+
+    <!-- Rust book at the lower right -->
+    <path d="m164 244 128-35c11-3 19 2 23 14l18 40c5 12-1 21-13 24l-113 33c-11 3-20-2-25-11l-29-45c-6-11-2-17 11-20Z" fill="url(#rustCover)" stroke="#98421F" stroke-width="2.5"/>
+    <path d="m161 257 13-5 27 47 108-31 4 12-115 33-37-56Z" fill="url(#pages)" stroke="#F3E9D5" stroke-width="1.5"/>
+    <path d="m188 304 112-32m-106 40 111-32m-104 40 107-31" stroke="#A45A36" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+  </g>
+</svg>

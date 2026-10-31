@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Image from "../assets/image.png";
 import Logo from "../assets/logo.png";
 import { FaEye, FaEyeSlash, FaUpload, FaCheckCircle } from "react-icons/fa";
 import "../styles/Register.css";
@@ -185,16 +184,29 @@ const Register = () => {
   }, []);
 
   return (
-    <div className="register-main">
-      <div className="register-left">
-        <img src={Image} alt="BookCycle illustration" />
-      </div>
-      <div className="register-right">
-        <div className="register-right-container">
-          <div className="register-logo">
-            <img src={Logo} alt="BookCycle Logo" />
+    <div className="register-main register-page">
+      <div className="register-card">
+        <aside className="register-visual">
+          <img src="/images/community-benefits-background.png" alt="A leafy library space for readers" />
+          <div className="register-visual-shade" />
+          <Link to="/home" className="register-visual-close" aria-label="Back to BookCycle home">×</Link>
+          <div className="register-visual-caption">
+            <span>ISLAMABAD'S BOOK COMMUNITY</span>
+            <h3>Good stories are better when shared.</h3>
+            <p>Find your next read, meet local readers, and pass a favorite book along.</p>
           </div>
+          <div className="register-visual-note">
+            <span className="register-note-mark">↗</span>
+            <div><strong>Read. Share. Repeat.</strong><small>One community, many stories</small></div>
+          </div>
+        </aside>
 
+        <section className="register-form-pane">
+          <Link to="/home" className="register-brand" aria-label="BookCycle home">
+            <img src={Logo} alt="" />
+            <span>BookCycle</span>
+          </Link>
+        <div className="register-right-container">
           <div className="register-center">
             <h2>Welcome to our website!</h2>
             <p>Please enter your details</p>
@@ -504,6 +516,7 @@ const Register = () => {
             </p>
           )}
         </div>
+        </section>
       </div>
     </div>
   );

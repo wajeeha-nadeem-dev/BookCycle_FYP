@@ -183,11 +183,11 @@ export default function SearchResultsPage() {
         <div style={{gridColumn: '1/-1', textAlign: 'center', padding: '40px', color: 'var(--muted)'}}>Loading books...</div>
       ) : books.map((book, idx) => (
         <div className="book-card" key={book._id} style={{ animationDelay: `${idx * 0.04}s`, cursor: 'pointer' }} onClick={() => navigate(`/book/${book._id}`)}>
+          {book.exchangeType === 'Sell' && <span className="tb tb-buy">Buy</span>}
+          {book.exchangeType === 'Rent' && <span className="tb tb-rent" style={{ background: 'var(--primary)', color: '#fff', padding: '4px 10px', borderRadius: '4px', fontSize: '.75rem', fontWeight: 'bold' }}>Rent</span>}
+          {book.exchangeType === 'Exchange' && <span className="tb tb-exchange">Exchange</span>}
           <div className="bc-img-wrap" style={{ position: 'relative' }}>
             <img src={book.images?.[0] ? 'http://localhost:5000' + book.images[0] : (book.image ? 'http://localhost:5000' + book.image : 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80')} alt={book.title} className="bc-img"/>
-            {book.exchangeType === 'Sell' && <span className="tb tb-buy">Buy</span>}
-            {book.exchangeType === 'Rent' && <span className="tb tb-rent" style={{ background: 'var(--primary)', color: '#fff', padding: '4px 10px', borderRadius: '4px', fontSize: '.75rem', fontWeight: 'bold' }}>Rent</span>}
-            {book.exchangeType === 'Exchange' && <span className="tb tb-exchange">Exchange</span>}
           </div>
           <div className="bc-body">
             <div className="bc-cat">{book.category}</div>

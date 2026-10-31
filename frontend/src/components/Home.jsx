@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect } from "react";
 import { api } from "../api/client";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { IMAGES } from "../data/assets";
 import StarRating from './StarRating';
 
 const styles = `
@@ -18,6 +17,10 @@ const styles = `
     --muted: #606C38;
     --border: #e8e0c4;
     --card: #fff;
+    --glass-forest: #06130f;
+    --glass-forest-raised: #0b1d17;
+    --glass-panel: rgba(14,36,29,.76);
+    --glass-line: rgba(190,230,200,.14);
   }
 
   @keyframes fadeUp { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:translateY(0) } }
@@ -47,10 +50,10 @@ const styles = `
   .h-btn-solid:hover { background:var(--cta); color:#fff; }
 
   /* Hero */
-  .h-hero { background:linear-gradient(135deg,var(--primary) 0%,#1a5e4a 60%,#0f3d2d 100%); padding:40px 5% 90px; position:relative; overflow:hidden; }
+  .h-hero { background:radial-gradient(900px 500px at 72% 28%,rgba(22,76,53,.48),transparent 72%),radial-gradient(700px 400px at 12% 95%,rgba(13,42,33,.76),transparent 68%),linear-gradient(125deg,var(--glass-forest-raised),var(--glass-forest)); padding:40px 5% 90px; position:relative; overflow:hidden; }
   .h-hero::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity:.4; }
   .h-hero-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; position:relative; z-index:1; }
-  .h-hero-label { display:inline-flex; align-items:center; gap:7px; background:rgba(221,161,94,.18); color:var(--accent); font-size:.73rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; padding:5px 14px; border-radius:50px; margin-bottom:18px; border:1px solid rgba(221,161,94,.3); }
+  .h-hero-label { display:inline-flex; align-items:center; gap:7px; background:rgba(221,161,94,.18); color:var(--accent); font-size:.73rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; padding:5px 14px; border-radius:50px; margin-bottom:18px; border:1px solid rgba(221,161,94,.3); box-shadow:inset 0 1px 0 rgba(255,255,255,.06); backdrop-filter:blur(10px); }
   .h-hero-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,3.5vw,3rem); font-weight:900; color:#fff; line-height:1.18; margin-bottom:16px; }
   .h-hero-title em { font-style:normal; color:var(--accent); }
   .h-hero-sub { font-size:1rem; color:rgba(255,255,255,.72); line-height:1.7; margin-bottom:32px; max-width:480px; }
@@ -130,7 +133,7 @@ const styles = `
   .h-cat-count { font-size:.72rem; color:var(--muted); }
 
   /* Free shelf highlight */
-  .h-free-box { background:linear-gradient(135deg,#1a5e4a,var(--primary)); border-radius:24px; padding:48px 40px; display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; overflow:hidden; position:relative; }
+  .h-free-box { background:radial-gradient(520px 260px at 15% 0%,rgba(160,230,170,.16),transparent 72%),linear-gradient(125deg,rgba(14,36,29,.94),rgba(6,19,15,.92)); border:1px solid var(--glass-line); border-radius:24px; padding:48px 40px; display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; overflow:hidden; position:relative; box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 20px 56px rgba(0,0,0,.24); backdrop-filter:blur(16px); }
   .h-free-box-icon { position:absolute; right:30px; top:20px; color:rgba(255,255,255,.05); pointer-events:none; }
   .h-free-box h2 { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,2.5vw,2rem); font-weight:900; color:#fff; margin-bottom:10px; }
   .h-free-box h2 em { font-style:normal; color:var(--accent); }
@@ -138,8 +141,8 @@ const styles = `
   .h-btn-free { display:inline-block; background:var(--accent); color:var(--primary); padding:13px 28px; border-radius:50px; font-weight:700; font-size:.92rem; border:none; cursor:pointer; transition:all .18s; box-shadow:0 4px 16px rgba(221,161,94,.4); font-family:'DM Sans',sans-serif; }
   .h-btn-free:hover { background:var(--cta); color:#fff; transform:translateY(-2px); }
   .h-free-books-row { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-  .h-free-mini { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); border-radius:14px; overflow:hidden; cursor:pointer; transition:all .18s; }
-  .h-free-mini:hover { background:rgba(255,255,255,.18); transform:translateY(-2px); }
+  .h-free-mini { background:var(--glass-panel); border:1px solid var(--glass-line); border-radius:14px; overflow:hidden; cursor:pointer; transition:all .18s; box-shadow:inset 0 1px 0 rgba(255,255,255,.05); backdrop-filter:blur(12px); }
+  .h-free-mini:hover { background:rgba(22,54,42,.8); transform:translateY(-2px); }
   .h-free-mini img { width:100%; height:120px; object-fit:cover; }
   .h-free-mini-info { padding:10px 12px; }
   .h-free-mini-title { font-size:.82rem; font-weight:700; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -154,14 +157,14 @@ const styles = `
   .h-value-desc { font-size:.83rem; color:var(--muted); line-height:1.6; }
 
   /* CTA Banner */
-  .h-cta-banner { background:var(--primary); padding:80px 5%; text-align:center; }
+  .h-cta-banner { background:radial-gradient(620px 260px at 50% 0%,rgba(46,112,77,.27),transparent 72%),linear-gradient(125deg,var(--glass-forest-raised),var(--glass-forest)); border-block:1px solid var(--glass-line); padding:80px 5%; text-align:center; }
   .h-cta-inner { max-width:640px; margin:0 auto; }
   .h-cta-inner h2 { font-family:'Playfair Display',serif; font-size:clamp(1.7rem,3vw,2.4rem); font-weight:900; color:#fff; margin-bottom:12px; }
   .h-cta-inner p { color:rgba(255,255,255,.68); font-size:.97rem; line-height:1.7; margin-bottom:32px; }
   .h-cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
 
   /* Footer */
-  .h-footer { background:#0d2e26; color:rgba(255,250,224,.75); padding:56px 5% 28px; font-family:'DM Sans',sans-serif; }
+  .h-footer { background:radial-gradient(600px 220px at 85% 0%,rgba(42,102,70,.2),transparent 72%),linear-gradient(125deg,#0b1d17,#06130f); border-top:1px solid var(--glass-line); color:rgba(255,250,224,.75); padding:56px 5% 28px; font-family:'DM Sans',sans-serif; }
   .h-footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:48px; }
   .h-f-brand { display:inline-flex; align-items:center; gap:8px; margin-bottom:14px; text-decoration:none; }
   .h-f-logo-icon { width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -195,7 +198,7 @@ const styles = `
   .h-popup-btn-ghost:hover { border-color:var(--primary); background:rgba(19,73,60,.04); }
 
   /* Toast */
-  .h-toast { position:fixed; bottom:28px; right:28px; z-index:9999; background:var(--primary); color:var(--bg); padding:11px 18px; border-radius:11px; font-size:.88rem; font-weight:500; display:flex; align-items:center; gap:8px; box-shadow:0 6px 24px rgba(19,73,60,.3); transform:translateY(60px); opacity:0; pointer-events:none; transition:transform .3s cubic-bezier(.34,1.56,.64,1), opacity .3s; font-family:'DM Sans',sans-serif; }
+  .h-toast { position:fixed; bottom:28px; right:28px; z-index:9999; background:rgba(14,36,29,.9); border:1px solid var(--glass-line); color:var(--bg); padding:11px 18px; border-radius:14px; font-size:.88rem; font-weight:500; display:flex; align-items:center; gap:8px; box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 32px rgba(0,0,0,.25); backdrop-filter:blur(14px); transform:translateY(60px); opacity:0; pointer-events:none; transition:transform .3s cubic-bezier(.34,1.56,.64,1), opacity .3s; font-family:'DM Sans',sans-serif; }
   .h-toast.show { transform:translateY(0); opacity:1; }
 
   @media (max-width: 900px) {
@@ -295,23 +298,12 @@ const FREE_BOOKS = [
 
 export default function Home({ onNavigate }) {
   const [showPopup, setShowPopup] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [toast, setToast] = useState({ show: false, msg: "" });
   const [featuredBooks, setFeaturedBooks] = useState([]);
   const [recentBooks, setRecentBooks] = useState([]);
   const [popularCats, setPopularCats] = useState([]);
   const navigate = useNavigate();
-  const { cart, addToCart } = useCart();
-  const cartCount = cart ? cart.length : 0;
-
-  useEffect(() => {
-    if (!isMenuOpen) return undefined;
-    const handleKeyDown = event => {
-      if (event.key === 'Escape') setIsMenuOpen(false);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isMenuOpen]);
+  const { addToCart } = useCart();
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80';
@@ -394,41 +386,6 @@ export default function Home({ onNavigate }) {
       <style>{styles}</style>
       <div style={{ background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
 
-        {/* Navbar */}
-        <nav className="h-navbar">
-          <button type="button" className="h-logo" onClick={() => navigate('/home')} aria-label="BookCycle home">
-            <div className="h-logo-icon">
-                <img src={IMAGES.img_0} alt="BookCycle" />
-            </div>
-            <span className="h-logo-text">BookCycle</span>
-          </button>
-
-          <button type="button" className="h-menu-toggle" aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={isMenuOpen} aria-controls="home-navigation" onClick={() => setIsMenuOpen(open => !open)}>
-            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              {isMenuOpen ? <><path d="M18 6 6 18" /><path d="m6 6 12 12" /></> : <><path d="M4 6h16" /><path d="M4 12h16" /><path d="M4 18h16" /></>}
-            </svg>
-          </button>
-
-          <ul id="home-navigation" className={`h-nav-links${isMenuOpen ? " is-open" : ""}`}>
-            <li><button className="h-nav-link" onClick={() => { setIsMenuOpen(false); navigate('/explore'); }}>Explore</button></li>
-            <li><button className="h-nav-link" onClick={() => { setIsMenuOpen(false); navigate('/seller'); }}>Sell</button></li>
-            <li>
-                <button className="h-nav-link" onClick={() => { setIsMenuOpen(false); navigate('/cart'); }} style={{ position: 'relative', display: 'flex', alignItems: 'center', padding: '7px 10px' }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    {cartCount > 0 && (
-                        <span style={{ 
-                            position: 'absolute', top: '0', right: '0', 
-                            background: 'var(--accent)', color: 'var(--primary)', 
-                            fontSize: '0.65rem', fontWeight: 'bold', 
-                            padding: '1px 5px', borderRadius: '10px' 
-                        }}>{cartCount}</span>
-                    )}
-                </button>
-            </li>
-            <li><button className="h-nav-cta" onClick={() => { setIsMenuOpen(false); onNavigate?.("login"); }}>Login</button></li>
-          </ul>
-        </nav>
-
         {/* Hero */}
         <section className="h-hero">
           <div className="h-hero-inner">
@@ -477,9 +434,9 @@ export default function Home({ onNavigate }) {
             <div className="h-books-grid">
               {featuredBooks.map(b => (
                 <div key={b.id} className="h-bcard" onClick={() => navigate(`/book/${b.id}`)}>
+                  {b.type && <span className={`h-badge h-badge-${b.type}`}>{b.type.charAt(0).toUpperCase() + b.type.slice(1)}</span>}
                   <div className="h-bcard-img">
                     <img src={b.img} alt={b.title} />
-                    {b.type && <span className={`h-badge h-badge-${b.type}`}>{b.type.charAt(0).toUpperCase() + b.type.slice(1)}</span>}
                   </div>
                   <div className="h-bcard-body">
                     <div className="h-bcat">{b.cat}</div>
@@ -523,9 +480,9 @@ export default function Home({ onNavigate }) {
             <div className="h-books-grid">
               {recentBooks.map(b => (
                 <div key={b.id} className="h-bcard" onClick={() => navigate(`/book/${b.id}`)}>
+                  {b.type && <span className={`h-badge h-badge-${b.type}`}>{b.type.charAt(0).toUpperCase() + b.type.slice(1)}</span>}
                   <div className="h-bcard-img">
                     <img src={b.img} alt={b.title} />
-                    {b.type && <span className={`h-badge h-badge-${b.type}`}>{b.type.charAt(0).toUpperCase() + b.type.slice(1)}</span>}
                   </div>
                   <div className="h-bcard-body">
                     <div className="h-bcat">{b.cat}</div>
@@ -657,7 +614,7 @@ export default function Home({ onNavigate }) {
         </section>
 
         {/* CTA Banner */}
-        <section className="h-cta-banner">
+        <section className="h-cta-banner" id="community">
           <div className="h-cta-inner">
             <h2>Ready to Start Reading<br />for Less?</h2>
             <p>Join thousands of readers in Islamabad who are sharing, renting, and discovering books through BookCycle.</p>
@@ -674,7 +631,7 @@ export default function Home({ onNavigate }) {
             <div>
               <div className="h-f-brand">
                 <div className="h-f-logo-icon">
-                  <img src={IMAGES.img_0} alt="BookCycle" />
+                  <img src="/images/bookcycle-logo.png" alt="BookCycle" />
                 </div>
                 <span className="h-f-brand-name">BookCycle</span>
               </div>

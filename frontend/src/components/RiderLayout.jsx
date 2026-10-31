@@ -108,7 +108,7 @@ const RiderLayout = () => {
 
         {/* Profile Card */}
         {sidebarOpen && (
-          <div style={{
+          <div className="rider-profile-card" style={{
             padding: '14px 16px',
             margin: '16px 12px 24px',
             backgroundColor: '#0E392E',

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Image from "../assets/image.png";
 import Logo from "../assets/logo.png";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
@@ -88,26 +87,30 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="login-main">
-      <div className="login-left">
-        <img src={Image} alt="BookCycle illustration" />
-      </div>
-      <div className="login-right">
-        <div className="login-right-container">
-          <div className="login-logo">
-            <img src={Logo} alt="BookCycle Logo" />
-          </div>
+    <div className="login-main login-page">
+      <div className="login-card">
+        <section className="login-form-pane">
+          <Link to="/home" className="login-brand" aria-label="BookCycle home">
+            <img src={Logo} alt="" />
+            <span>BookCycle</span>
+          </Link>
+
           <div className="login-center">
+            <span className="login-eyebrow">WELCOME BACK</span>
             <h2>Welcome back!</h2>
             <p>Please enter your details</p>
             <form onSubmit={handleLoginSubmit}>
-              {inlineError && <div style={{ color: '#d32f2f', background: '#ffebee', padding: '10px', borderRadius: '4px', marginBottom: '15px', fontSize: '14px', textAlign: 'center', border: '1px solid #ffcdd2' }}>{inlineError}</div>}
-              <input type="email" placeholder="Email" name="email" />
+              {inlineError && <div style={{ color: '#a83232', background: '#fff0eb', padding: '10px 12px', borderRadius: '10px', marginBottom: '15px', fontSize: '14px', textAlign: 'left', border: '1px solid #efc9bd', whiteSpace: 'pre-line' }}>{inlineError}</div>}
+              <label className="login-field-label" htmlFor="login-email">Email address</label>
+              <input id="login-email" type="email" placeholder="you@example.com" name="email" autoComplete="email" />
+              <label className="login-field-label" htmlFor="login-password">Password</label>
               <div className="pass-input-div">
                 <input
+                  id="login-password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Password"
+                  placeholder="Enter your password"
                   name="password"
+                  autoComplete="current-password"
                 />
                 {showPassword ? (
                   <FaEyeSlash
@@ -127,17 +130,14 @@ const Login = () => {
               <div className="login-center-options">
                 <div className="remember-div">
                   <input type="checkbox" id="remember-checkbox" />
-                  <label htmlFor="remember-checkbox">
-                    Remember for 30 days
-                  </label>
+                  <label htmlFor="remember-checkbox">Remember for 30 days</label>
                 </div>
-                <Link to="/forgot-password" className="forgot-pass-link">
-                  Forgot password?
-                </Link>
+                <Link to="/forgot-password" className="forgot-pass-link">Forgot password?</Link>
               </div>
               <div className="login-center-buttons">
                 <button type="submit" disabled={isLoading}>
                   {isLoading ? "Logging in..." : "Log In"}
+                  {!isLoading && <span aria-hidden="true">→</span>}
                 </button>
               </div>
             </form>
@@ -146,7 +146,22 @@ const Login = () => {
           <p className="login-bottom-p">
             Don't have an account? <Link to="/register">Sign Up</Link>
           </p>
-        </div>
+        </section>
+
+        <aside className="login-visual">
+          <img src="/images/community-benefits-background.png" alt="A leafy library space for readers" />
+          <div className="login-visual-shade" />
+          <Link to="/home" className="login-visual-close" aria-label="Back to BookCycle home">×</Link>
+          <div className="login-visual-caption">
+            <span>ISLAMABAD'S BOOK COMMUNITY</span>
+            <h3>Good stories are better when shared.</h3>
+            <p>Find your next read, meet local readers, and pass a favorite book along.</p>
+          </div>
+          <div className="login-visual-note">
+            <span className="login-note-mark">↗</span>
+            <div><strong>Read. Share. Repeat.</strong><small>One community, many stories</small></div>
+          </div>
+        </aside>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IMAGES } from '../data/assets';
 
 export default function Footer() {
   return (
@@ -8,7 +7,7 @@ export default function Footer() {
       <div className="footer-grid">
         <div>
           <Link to="/home" className="footer-brand">
-            <div className="f-logo"><img src={IMAGES.img_0} alt="BookCycle"/></div>
+            <div className="f-logo"><img src="/images/bookcycle-logo.png" alt="BookCycle"/></div>
             <span className="footer-brand-name">BookCycle</span>
           </Link>
           <p className="footer-desc">Islamabad's community book platform. Share, rent, and discover books across the city.</p>

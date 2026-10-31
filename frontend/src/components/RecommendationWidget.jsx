@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import useRecommendations from '../hooks/useRecommendations';
-import StarRating from './StarRating';
 
 function getImageUrl(book) {
     const imagePath = book.image || (book.images && book.images[0]);
@@ -11,6 +10,12 @@ function getImageUrl(book) {
     }
     if (imagePath.startsWith('http') || imagePath.startsWith('data:image')) return imagePath;
     return `http://localhost:5000${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+}
+
+function getBookPrice(book) {
+    if (book.exchangeType === 'Exchange') return 'Exchange';
+    const price = Number(String(book.price ?? 0).replace(/[^0-9.-]/g, '')) || 0;
+    return price > 0 ? `Rs. ${price.toLocaleString()}` : 'Free';
 }
 
 export default function RecommendationWidget() {
@@ -43,25 +48,11 @@ export default function RecommendationWidget() {
             <div className="rec-img">
               <img src={getImageUrl(book)} alt={book.title}/>
             </div>
-            <div style={{ flex: '1', minWidth: '0' }}>
-              <div className="rec-book-title" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{book.title}</div>
-              <div className="rec-author" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>author: {book.author}</div>
-              <div className="rec-stars">
-                <StarRating
-                  rating={book.bookRating?.starRating || 0}
-                  reviewCount={book.bookRating?.reviewsCount || 0}
-                  size={11}
-                />
-              </div>
-              <div className="rec-bottom">
-                <span className={`rec-price ${book.exchangeType === 'Exchange' ? 'exchange-price' : ''}`}>
-                  {book.exchangeType === 'Exchange' ? 'Exchange' : `Rs. ${book.price}`}
-                </span>
-                <Link to={`/book/${book._id}`} className="rec-action" style={{ background: book.exchangeType === 'Exchange' ? 'var(--secondary)' : 'var(--cta)' }}>
-                  {book.exchangeType === 'Exchange' ? 'Exchange' : (book.exchangeType === 'Rent' ? 'Rent' : 'Buy')}
-                </Link>
-              </div>
+            <div className="rec-book-info">
+              <div className="rec-book-title">{book.title}</div>
+              <div className="rec-price">{getBookPrice(book)}</div>
             </div>
+            <Link to={`/book/${book._id}`} className="sidebar-book-details">Details</Link>
           </div>
         ))}
       </div>

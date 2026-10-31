@@ -207,7 +207,7 @@ button {
 }
 
 @media (max-width: 900px) {
-  nav:not(.h-navbar) {
+  nav:not(.h-navbar):not(.site-navbar) {
     height: 76px !important;
     padding-inline: clamp(14px, 4vw, 24px) !important;
     flex-direction: row !important;
@@ -215,7 +215,7 @@ button {
     gap: 12px !important;
   }
 
-  nav:not(.h-navbar) .hamburger {
+  nav:not(.h-navbar):not(.site-navbar) .hamburger {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
@@ -227,7 +227,7 @@ button {
     background: rgba(255, 250, 224, .08);
   }
 
-  nav:not(.h-navbar) .nav-links {
+  nav:not(.h-navbar):not(.site-navbar) .nav-links {
     position: fixed;
     top: 76px;
     left: 0;
@@ -252,25 +252,25 @@ button {
     z-index: 10001;
   }
 
-  nav:not(.h-navbar) .nav-links.open {
+  nav:not(.h-navbar):not(.site-navbar) .nav-links.open {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
   }
 
-  nav:not(.h-navbar) .nav-links > li {
+  nav:not(.h-navbar):not(.site-navbar) .nav-links > li {
     width: 100%;
     min-width: 0;
     padding: 8px 0;
     border-bottom: 1px solid rgba(255, 250, 224, .1);
   }
 
-  nav:not(.h-navbar) .nav-links > li:last-child {
+  nav:not(.h-navbar):not(.site-navbar) .nav-links > li:last-child {
     border-bottom: 0;
   }
 
-  nav:not(.h-navbar) .nav-links a {
+  nav:not(.h-navbar):not(.site-navbar) .nav-links a {
     display: flex;
     align-items: center;
     width: 100%;
