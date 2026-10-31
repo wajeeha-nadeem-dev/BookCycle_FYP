@@ -634,7 +634,6 @@ div[style*="background: var(--primary)"] {
 /* Shared palette and glass card layout, keeping the existing page content intact. */
 body,
 .HomePage,
-#root div[style*="background: var(--bg)"]:has(.h-hero),
 .WishlistPage {
   background-color: #f4f2e9 !important;
 }
@@ -856,8 +855,19 @@ body {
   background-repeat: no-repeat !important;
 }
 
-:is(.HomePage, .WishlistPage, .ExploreBooksPage, .CategoryResultsPage, .SearchResultsPage, .CartPage, #root > div:has(.h-hero), #root div[style*="background: var(--bg)"]:has(.h-hero)) {
+:is(.HomePage, .WishlistPage, .ExploreBooksPage, .CategoryResultsPage, .SearchResultsPage, .CartPage, #root > div:has(.h-hero)) {
   background: transparent !important;
+}
+
+.landing-page {
+  background-color: #f4f1e7 !important;
+  background-image:
+    linear-gradient(rgba(248, 244, 233, .13), rgba(248, 244, 233, .13)),
+    url('/images/landing-page-background.png') !important;
+  background-position: center, center 48% !important;
+  background-size: cover, cover !important;
+  background-attachment: fixed, fixed !important;
+  background-repeat: no-repeat, no-repeat !important;
 }
 
 :is(.book-card, .h-bcard, .h-free-mini, .rec-book, .wish-card, .cart-item-card, .saved-item-card, .top-book-row, .rec-widget, .sidebar-widget, .cart-summary-card, .admin-profile-card, .rider-profile-card, .h-how-card, .h-value-card, .benefit-card, .home-cat-card, .cat-card, .form-card, .pub-card, .preview-card, .price-card, .checklist-card) {
@@ -876,6 +886,10 @@ body {
 
 :is(.HomePage .section-title, .HomePage .widget-title, .h-section-title) {
   color: #f4f1e5 !important;
+}
+
+.landing-page .h-section-title {
+  color: #13493c !important;
 }
 
 :is(.HomePage .section-title span, .HomePage .see-all, .h-section-title em, .h-section-tag) {
@@ -907,6 +921,25 @@ body {
 
 .h-section-head {
   margin-bottom: 12px !important;
+}
+
+.h-section:has(.h-how-grid) {
+  padding-block: 40px !important;
+}
+
+.h-section:has(.h-how-grid) .h-section-inner > div:first-child {
+  margin-bottom: 24px !important;
+}
+
+.h-how-card .h-how-title,
+.h-how-card .h-how-desc,
+.h-value-card .h-value-title,
+.h-value-card .h-value-desc {
+  color: #fff !important;
+}
+
+.h-value-card .h-value-icon {
+  color: #fff !important;
 }
 
 .h-section-sub {
@@ -969,6 +1002,94 @@ body {
 
 .how-it-works-section .section-title span {
   color: #b95f43 !important;
+}
+
+/* Public landing page: use separate photo treatments for the hero and the page backdrop. */
+.landing-page .h-hero {
+  min-height: clamp(520px, calc(82svh - 72px), 700px) !important;
+  background:
+    linear-gradient(90deg, rgba(4, 15, 11, .58) 0%, rgba(4, 15, 11, .34) 48%, rgba(4, 15, 11, .08) 82%),
+    url('/images/landing-hero-background.png') center 52% / cover no-repeat !important;
+}
+
+.landing-page > .h-section,
+.landing-page > .h-section.alt,
+.landing-page > .h-section.dark {
+  background: transparent !important;
+}
+
+.landing-page .h-bcard {
+  background: linear-gradient(135deg, rgba(55, 84, 67, .94), rgba(78, 108, 87, .9) 55%, rgba(58, 88, 69, .94)) !important;
+  border-color: rgba(190, 224, 194, .42) !important;
+  color: #fffaf0 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 12px 30px rgba(14, 42, 28, .18) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(135%) !important;
+  backdrop-filter: blur(22px) saturate(135%) !important;
+}
+
+.landing-page .h-bcard .h-bcard-body {
+  background: linear-gradient(135deg, rgba(160, 190, 164, .14), rgba(31, 57, 42, .12)) !important;
+  color: #fffaf0 !important;
+  -webkit-backdrop-filter: blur(22px) saturate(140%) !important;
+  backdrop-filter: blur(22px) saturate(140%) !important;
+}
+
+.landing-page .h-bcard .h-btitle,
+.landing-page .h-bcard .h-bprice {
+  color: #fffaf0 !important;
+}
+
+.landing-page .h-bcard .h-bauthor {
+  color: rgba(255, 250, 240, .8) !important;
+}
+
+.landing-page .h-bcard .h-bcat {
+  color: #e2f0df !important;
+  background: rgba(190, 224, 194, .14) !important;
+  border-color: rgba(190, 224, 194, .28) !important;
+}
+
+.landing-page :is(.h-how-card, .h-value-card, .h-free-mini, .h-free-box, .h-cat-pill) {
+  border: 1px solid rgba(221, 161, 94, .48) !important;
+  background: linear-gradient(135deg, rgba(119, 65, 29, .84), rgba(174, 95, 38, .74) 55%, rgba(104, 56, 26, .82)) !important;
+  color: #fffaf0 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 250, 224, .18), 0 12px 30px rgba(75, 38, 16, .2) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
+  backdrop-filter: blur(18px) saturate(140%) !important;
+}
+
+.landing-page .h-how-card:hover,
+.landing-page .h-value-card:hover,
+.landing-page .h-free-mini:hover,
+.landing-page .h-cat-pill:hover {
+  border-color: rgba(255, 208, 151, .72) !important;
+  background: linear-gradient(135deg, rgba(143, 75, 31, .9), rgba(193, 108, 43, .82) 55%, rgba(121, 64, 27, .9)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 250, 224, .24), 0 16px 34px rgba(75, 38, 16, .28) !important;
+}
+
+.landing-page .h-how-circle {
+  background: rgba(221, 161, 94, .3) !important;
+  color: #fffaf0 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 250, 224, .2), 0 6px 16px rgba(75, 38, 16, .24) !important;
+}
+
+.landing-page .h-cat-name,
+.landing-page .h-cat-count,
+.landing-page .h-how-title,
+.landing-page .h-how-desc,
+.landing-page .h-value-title,
+.landing-page .h-value-desc,
+.landing-page .h-free-mini-title {
+  color: #fffaf0 !important;
+}
+
+.landing-page .h-cat-pill:hover .h-cat-name,
+.landing-page .h-cat-pill:hover .h-cat-count {
+  color: #fffaf0 !important;
+}
+
+.landing-page .h-free-mini-auth {
+  color: rgba(255, 250, 240, .78) !important;
 }
 
 .how-it-works-section .steps-grid {

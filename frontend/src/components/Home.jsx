@@ -384,7 +384,7 @@ export default function Home({ onNavigate }) {
   return (
     <>
       <style>{styles}</style>
-      <div style={{ background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
+      <div className="landing-page" style={{ background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
 
         {/* Hero */}
         <section className="h-hero">
@@ -392,21 +392,13 @@ export default function Home({ onNavigate }) {
             <div style={{ animation: "fadeUp .5s ease both" }}>
               <div className="h-hero-label">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                Islamabad's Book Community
+                A Community Built Around Books
               </div>
-              <h1 className="h-hero-title">Share, Rent, and<br /><em>Discover Books</em><br />Around You</h1>
-              <p className="h-hero-sub">Find affordable books, rent for short-term use, or share yours with others. Over 900+ books available across Islamabad.</p>
+              <h1 className="h-hero-title">Find your next read.<br /><em>Pass a good book on.</em></h1>
+              <p className="h-hero-sub">Buy, rent, exchange, or share books with readers across Islamabad.</p>
               <div className="h-hero-btns">
                 <button className="h-btn-primary" onClick={() => navigate('/explore')}>Explore Books</button>
-                <button className="h-btn-outline" onClick={() => onNavigate?.("register")}>Join BookCycle</button>
-              </div>
-              <div className="h-hero-stats">
-                {[["900+", "Books Listed"], ["400+", "Active Readers"], ["120+", "Free Books"]].map(([num, label]) => (
-                  <div key={label}>
-                    <div className="h-stat-num">{num}</div>
-                    <div className="h-stat-label">{label}</div>
-                  </div>
-                ))}
+                <button className="h-btn-outline" onClick={() => onNavigate?.("register")}>Join the Community</button>
               </div>
             </div>
             <div className="h-hero-visual" style={{ animation: "fadeUp .5s ease .15s both" }}>
